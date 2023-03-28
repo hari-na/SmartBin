@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>SmartBin</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
+	<style>
+		body {
+			background-image: url("bg.jpg");
+			background-size: cover;
+			background-position: center;
+		}
+
+		img {
+			box-shadow: 2px 2px 13px rgba(0, 0, 0, 0.5);
+			z-index: -5;
+			position: absolute;
+			margin-left: 50px;
+			margin-right: 50px;
+			margin-top: 50px;
+			width: 92.5%;
+			height: 80%;
+		}
+
+		.container {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 10%;
+			z-index: 5;
+		}
+
+		/* Define the styles for the three rectangles */
+		.rectangle {
+			width: 100px;
+			height: 200px;
+			margin: 0 10px;
+			bottom: 0;
+		}
+
+		/* Set the background colors for each rectangle */
+		#rectangle1 {
+			background-color: #A7EBF5;
+		}
+
+		#rectangle2 {
+			background-color: #A0B0B5;
+		}
+
+		#rectangle3 {
+			background-color: #E8D828;
+		}
+
+		h1 {
+			font-family: 'Black Han Sans', sans-serif;
+			text-align: center;
+			padding-top: 10%;
+		}
+	</style>
+</head>
+
+<body>
+	<img src="white.jpg" alt="Image with drop shadow">
+	<h1>SmartBin</h1>
+	<div class="container">
+		<div class="rectangle" id="rectangle1"></div>
+		<div class="rectangle" id="rectangle2"></div>
+		<div class="rectangle" id="rectangle3"></div>
+	</div>
+	<script>
+		fetch('http://127.0.0.1:5000/data')
+			.then(response => response.json())
+			.then(data => {
+				// Calculate the dimensions of the rectangles based on the data
+				const paperHeight = `${(data.papers) * 10}px`;
+				const metalHeight = `${(data.metals) * 10}px`;
+				const plasticHeight = `${(data.plastics) * 10}px`;
+
+				// Update the styles of the rectangles
+				document.getElementById('rectangle1').style.height = paperHeight;
+				document.getElementById('rectangle1').style.marginTop = `${((10 - data.papers) * 10)}px`;
+				document.getElementById('rectangle2').style.height = metalHeight;
+				document.getElementById('rectangle2').style.marginTop = `${((10 - data.metals) * 10)}px`;
+				document.getElementById('rectangle3').style.height = plasticHeight;
+				document.getElementById('rectangle3').style.marginTop = `${((10 - data.plastics) * 10)}px`;
+
+				if (data.papers >= 10) {
+					alert('Warning: Paper bin is almost full!');
+				}
+
+				if (data.metals >= 10) {
+					alert('Warning: Metal bin is almost full!');
+				}
+
+				if (data.plastics >= 10) {
+					alert('Warning: Plastic bin is almost full!');
+				}
+
+
+			});
+	</script>
+</body>
+
+</html>
